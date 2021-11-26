@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./AuthForm.module.css";
 import Login from "./Login";
-// import SignUp from "./SignUp";
+import SignUp from "./SignUp";
 
 const AuthForm = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -16,7 +16,7 @@ const AuthForm = () => {
   return (
     <section className={classes.authSection}>
       {isSignIn && <Login goToSignUp={setIsSignUp} />}
-      {/* {!isSignIn && <SignUp goToLogin={setIsLogin} />} */}
+      {!isSignIn && <SignUp goToLogin={setIsLogin} />}
     </section>
   );
 };
