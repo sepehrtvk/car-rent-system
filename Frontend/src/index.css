@@ -1,0 +1,28 @@
+
+ @font-face {
+  font-family: "Shabnam";
+  src: local("Shabnam"),  url('./assets/fonts/Shabnam.woff') format("woff");  
+  font-weight: normal;
+}
+ @font-face {
+  font-family: "Shabnam";
+  src: local("Shabnam"),  url('./assets/fonts/Shabnam-Bold.woff') format("woff");  
+  font-weight: bold;
+}
+
+body {
+  margin: 0;
+  font-family: 'Shabnam', sans-serif !important; 
+  box-sizing: inherit;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+.smFont {
+  font-size: 0.8rem;
+}
+.mdFont {
+  font-size: 0.95rem;
+}
