@@ -3,18 +3,26 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaPhoneAlt } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
 const Header = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          سامانه اجاره خودرو
+          <div className="d-flex justify-content-between align-items-center">
+            <img
+              src={logo}
+              alt="logoMain"
+              style={{ borderRadius: "50%", height: "60px", width: "60px" }}
+            />
+            <span className="ms-2" >سامانه اجاره خودرو</span>
+          </div>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-4">
             <Nav.Link href="#home">مشاهده خودرو ها</Nav.Link>
-            <Nav.Link as={NavLink} to="/lastCars">  
+            <Nav.Link as={NavLink} to="/lastCars">
               آخرین خودرو ها
             </Nav.Link>
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">

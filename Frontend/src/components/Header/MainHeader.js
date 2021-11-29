@@ -5,7 +5,9 @@ const MainHeader = () => {
   return (
     <Container fluid className={`${classes.main} p-0`}>
       <div className={classes.heading}>
-        <h1>Car Rent System</h1>
+        <h1>کارنت</h1>
+        <h2>سمانه اجاره آنلاین خورو</h2>
+        <p>با پشتیبانی ۲۴ ساعته</p> 
       </div>
     </Container>
   );
