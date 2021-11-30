@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { BsFillPersonFill } from "react-icons/bs";
+import { IoMdExit } from "react-icons/io";
 import { FaPhoneAlt } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
@@ -52,7 +53,7 @@ const Header = () => {
             </Link>
           )}
           {authCtx.isLoggedIn && (
-            <div className="d-flex" >
+            <div className="d-flex">
               <span className="ms-2">سلام</span>
               <h5>{name}</h5>
             </div>
@@ -61,6 +62,15 @@ const Header = () => {
             <FaPhoneAlt />
             <span className="ms-1">۰۹۱۲۰۵۳۲۰۲۰</span>
           </div>
+          {authCtx.isLoggedIn && (
+            <button
+              className="ms-4 border-start ps-3 btn btn-primary"
+              onClick={authCtx.logout}
+            >
+              <IoMdExit className="me-1" />
+              <span className="ms-1">خروج</span>
+            </button>
+          )}
         </div>
       </Container>
     </Navbar>
