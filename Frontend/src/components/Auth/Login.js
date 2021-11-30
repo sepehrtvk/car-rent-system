@@ -1,13 +1,13 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import useInput from "../../hooks/use-input";
 import classes from "./Login.module.css";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const checkEmailValid = (value) => {
-  const email = value.includes("@")
+  const email = value.includes("@");
   const isNotNumber = isNaN(value);
 
   return isNotNumber && email;
@@ -21,6 +21,15 @@ const Login = (props) => {
   const history = useHistory();
   const authCtx = useContext(AuthContext);
 
+  const [show, setShow] = useState(false);
+  const [errorMessage, seterrorMessage] = useState("Error");
+
+  const handleClose = () => setShow(false);
+  const handleShow = (message) => {
+    seterrorMessage(message);
+    setShow(true);
+  };
+
   const {
     value: emailValue,
     isValid: emailIsValid,
@@ -29,7 +38,6 @@ const Login = (props) => {
     inputBlurHandler: emailBlurHandler,
     reset: resetemail,
   } = useInput(checkEmailValid);
-
 
   const {
     value: passwordValue,
@@ -70,24 +78,20 @@ const Login = (props) => {
           return res.json();
         } else {
           return res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            // if (data && data.error && data.error.message) {
-            //   errorMessage = data.error.message;
-            // }
-
-            throw new Error(errorMessage);
+            let errorMessage2 = "Authentication failed!";
+            errorMessage2 = data.message;
+            handleShow(errorMessage2);
+            return;
           });
         }
       })
       .then((data) => {
-        authCtx.login(data.token, 3443443,data.data.user.name);
+        authCtx.login(data.token, 3443443, data.data.user.name);
         history.replace("/");
       })
       .catch((err) => {
         console.log(err);
       });
-
-
 
     resetemail();
     resetPassword();
@@ -135,6 +139,17 @@ const Login = (props) => {
           ثبت نام
         </Button>
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>ورود نا معتبر</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            بستن
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Form>
   );
 };
