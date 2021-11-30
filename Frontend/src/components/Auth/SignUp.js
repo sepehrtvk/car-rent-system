@@ -2,14 +2,20 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import classes from "./SignUp.module.css";
 import useInput from "../../hooks/use-input";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
-const checkPhoneValid = (value) => {
+import AuthContext from "../../store/auth-context";
+
+const checkEmailValid = (value) => {
   const isEmpty = value.trim() !== "";
   const is11char = value.length === 11;
   const isNotNumber = isNaN(value);
   const isNotFloat = value.indexOf(".") !== -1;
   const startsWith = value.trim().startsWith("0");
 
+  return true;
   return isEmpty && is11char && !isNotNumber && startsWith && !isNotFloat;
 };
 
@@ -18,6 +24,9 @@ const checkPasswordValid = (value) => {
 };
 
 const SignUp = (props) => {
+  const history = useHistory();
+  const authCtx = useContext(AuthContext);
+
   const {
     value: fnameValue,
     isValid: fnameIsValid,
@@ -37,13 +46,13 @@ const SignUp = (props) => {
   } = useInput((value) => value.trim() !== "");
 
   const {
-    value: phoneValue,
-    isValid: phoneIsValid,
-    hasError: phoneHasError,
-    valueChangeHandler: phoneChangeHandler,
-    inputBlurHandler: phoneBlurHandler,
-    reset: resetphone,
-  } = useInput(checkPhoneValid);
+    value: emailValue,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetemail,
+  } = useInput(checkEmailValid);
 
   const {
     value: passwordValue,
@@ -69,7 +78,7 @@ const SignUp = (props) => {
     fnameIsValid &&
     lnameIsValid &&
     passwordIsValid &&
-    phoneIsValid &&
+    emailIsValid &&
     password2IsValid
   ) {
     formIsValid = true;
@@ -80,22 +89,70 @@ const SignUp = (props) => {
 
     fnameBlurHandler();
     lnameBlurHandler();
-    phoneBlurHandler();
+    emailBlurHandler();
     passwordBlurHandler();
     password2BlurHandler();
-    
+
     if (!formIsValid) {
       return;
     }
 
     console.log("Submitted!");
-    console.log(fnameValue, lnameValue);
+    console.log(fnameValue, lnameValue, emailValue, passwordValue);
 
-    resetFname();
-    resetLname();
-    resetPassword();
-    resetPassword2();
-    resetphone();
+    // axios
+    //   .post("http://localhost:5550/api/v1/users/login",{
+    //     name: fnameValue + " " + lnameValue,
+    //     email: emailValue,
+    //     password: passwordValue,
+    //     passwordConfirm: passwordValue,
+    //   })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
+
+    fetch("http://localhost:5550/api/v1/users/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        name: fnameValue + " " + lnameValue,
+        email: emailValue,
+        password: passwordValue,
+        passwordConfirm: passwordValue,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed!";
+            // if (data && data.error && data.error.message) {
+            //   errorMessage = data.error.message;
+            // }
+
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        // const expirationTime = new Date(
+        //   new Date().getTime() + +data.expiresIn * 1000
+        // );
+        console.log(data.token);
+        authCtx.login(data.token, 3443443,fnameValue);
+        history.replace("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // resetFname();
+    // resetLname();
+    // resetPassword();
+    // resetPassword2();
+    // resetemail();
   };
 
   return (
@@ -141,18 +198,17 @@ const SignUp = (props) => {
       </div>
 
       <Form.Group className="mb-4" controlId="phone">
-        <Form.Label>شماره تلفن</Form.Label>
+        <Form.Label>ایمیل</Form.Label>
         <Form.Control
-          type="tel"
-          maxLength="11"
-          placeholder="۰۹xxxxxxxxx"
-          value={phoneValue}
-          onChange={phoneChangeHandler}
-          onBlur={phoneBlurHandler}
+          type="email"
+          placeholder="example@test.com"
+          value={emailValue}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
         />
-        {phoneHasError && (
+        {emailHasError && (
           <Form.Text className="text-danger">
-            یک شماره موبایل معتبر وارد کنید
+            یک ایمیل موبایل معتبر وارد کنید
           </Form.Text>
         )}
       </Form.Group>
