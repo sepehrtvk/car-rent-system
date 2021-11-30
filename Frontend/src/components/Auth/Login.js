@@ -2,15 +2,15 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import useInput from "../../hooks/use-input";
 import classes from "./Login.module.css";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../../store/auth-context";
+import { useContext } from "react";
 
-const checkPhoneValid = (value) => {
-  const isEmpty = value.trim() !== "";
-  const is11char = value.length === 11;
+const checkEmailValid = (value) => {
+  const email = value.includes("@")
   const isNotNumber = isNaN(value);
-  const isNotFloat = value.indexOf(".") !== -1;
-  const startsWith = value.trim().startsWith("0");
 
-  return isEmpty && is11char && !isNotNumber && startsWith && !isNotFloat;
+  return isNotNumber && email;
 };
 
 const checkPasswordValid = (value) => {
@@ -18,14 +18,18 @@ const checkPasswordValid = (value) => {
 };
 
 const Login = (props) => {
+  const history = useHistory();
+  const authCtx = useContext(AuthContext);
+
   const {
-    value: phoneValue,
-    isValid: phoneIsValid,
-    hasError: phoneHasError,
-    valueChangeHandler: phoneChangeHandler,
-    inputBlurHandler: phoneBlurHandler,
-    reset: resetphone,
-  } = useInput(checkPhoneValid);
+    value: emailValue,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetemail,
+  } = useInput(checkEmailValid);
+
 
   const {
     value: passwordValue,
@@ -38,7 +42,7 @@ const Login = (props) => {
 
   let formIsValid = false;
 
-  if (phoneIsValid && passwordIsValid) {
+  if (emailIsValid && passwordIsValid) {
     formIsValid = true;
   }
 
@@ -46,15 +50,46 @@ const Login = (props) => {
     e.preventDefault();
 
     passwordBlurHandler();
-    phoneBlurHandler();
+    emailBlurHandler();
     if (!formIsValid) {
       return;
     }
 
-    console.log("Submitted!");
-    console.log(phoneValue, passwordValue);
+    fetch("http://localhost:5550/api/v1/users/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: emailValue,
+        password: passwordValue,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed!";
+            // if (data && data.error && data.error.message) {
+            //   errorMessage = data.error.message;
+            // }
 
-    resetphone();
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        authCtx.login(data.token, 3443443,data.data.user.name);
+        history.replace("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+
+
+    resetemail();
     resetPassword();
   };
 
@@ -62,18 +97,17 @@ const Login = (props) => {
     <Form className={classes.form} onSubmit={submitLoginHandler}>
       <h4 className="text-center mt-4 mb-5">سامانه اجاره خودرو</h4>
       <Form.Group className="mb-4" controlId="phone">
-        <Form.Label>شماره تلفن</Form.Label>
+        <Form.Label>ایمیل</Form.Label>
         <Form.Control
-          type="tel"
-          maxLength="11"
-          placeholder="۰۹xxxxxxxxx"
-          value={phoneValue}
-          onChange={phoneChangeHandler}
-          onBlur={phoneBlurHandler}
+          type="email"
+          placeholder="example@test.com"
+          value={emailValue}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
         />
-        {phoneHasError && (
+        {emailHasError && (
           <Form.Text className="text-danger">
-            یک شماره موبایل معتبر وارد کنید
+            یک ایمیل موبایل معتبر وارد کنید
           </Form.Text>
         )}
       </Form.Group>

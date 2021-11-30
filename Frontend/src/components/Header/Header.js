@@ -4,7 +4,13 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { FaPhoneAlt } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import AuthContext from "../../store/auth-context";
+import { useContext } from "react";
+
 const Header = () => {
+  const authCtx = useContext(AuthContext);
+  const name = localStorage.getItem("name");
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -15,7 +21,7 @@ const Header = () => {
               alt="logoMain"
               style={{ borderRadius: "50%", height: "60px", width: "60px" }}
             />
-            <span className="ms-2" >سامانه اجاره خودرو</span>
+            <span className="ms-2">سامانه اجاره خودرو</span>
           </div>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -39,10 +45,18 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
         <div className="d-flex align-items-center">
-          <Link to="/auth" className="btn btn-primary">
-            <BsFillPersonFill className="me-1" />
-            ورود
-          </Link>
+          {!authCtx.isLoggedIn && (
+            <Link to="/auth" className="btn btn-primary">
+              <BsFillPersonFill className="me-1" />
+              ورود
+            </Link>
+          )}
+          {authCtx.isLoggedIn && (
+            <div className="d-flex" >
+              <span className="ms-2">سلام</span>
+              <h5>{name}</h5>
+            </div>
+          )}
           <div className="ms-4 border-start ps-3">
             <FaPhoneAlt />
             <span className="ms-1">۰۹۱۲۰۵۳۲۰۲۰</span>

@@ -4,19 +4,14 @@ import classes from "./SignUp.module.css";
 import useInput from "../../hooks/use-input";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 
 import AuthContext from "../../store/auth-context";
 
 const checkEmailValid = (value) => {
-  const isEmpty = value.trim() !== "";
-  const is11char = value.length === 11;
+  const email = value.includes("@")
   const isNotNumber = isNaN(value);
-  const isNotFloat = value.indexOf(".") !== -1;
-  const startsWith = value.trim().startsWith("0");
 
-  return true;
-  return isEmpty && is11char && !isNotNumber && startsWith && !isNotFloat;
+  return isNotNumber && email;
 };
 
 const checkPasswordValid = (value) => {
@@ -97,18 +92,6 @@ const SignUp = (props) => {
       return;
     }
 
-    console.log("Submitted!");
-    console.log(fnameValue, lnameValue, emailValue, passwordValue);
-
-    // axios
-    //   .post("http://localhost:5550/api/v1/users/login",{
-    //     name: fnameValue + " " + lnameValue,
-    //     email: emailValue,
-    //     password: passwordValue,
-    //     passwordConfirm: passwordValue,
-    //   })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
 
     fetch("http://localhost:5550/api/v1/users/signup", {
       method: "POST",
@@ -137,22 +120,18 @@ const SignUp = (props) => {
         }
       })
       .then((data) => {
-        // const expirationTime = new Date(
-        //   new Date().getTime() + +data.expiresIn * 1000
-        // );
-        console.log(data.token);
-        authCtx.login(data.token, 3443443,fnameValue);
+        authCtx.login(data.token, 3443443,data.data.user.name);
         history.replace("/");
       })
       .catch((err) => {
         console.log(err);
       });
 
-    // resetFname();
-    // resetLname();
-    // resetPassword();
-    // resetPassword2();
-    // resetemail();
+    resetFname();
+    resetLname();
+    resetPassword();
+    resetPassword2();
+    resetemail();
   };
 
   return (
