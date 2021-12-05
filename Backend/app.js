@@ -22,6 +22,7 @@ mongoose
 
 
 const userRouter = require('./routes/userRoutes');
+const carRouter = require('./routes/carRoutes');
 
 
 // MIDDLEWARES
@@ -54,6 +55,7 @@ app.use(function (req, res, next) {
 
 // ROUTES
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/cars', carRouter);
 
 const port = process.env.PORT || 5000;
 
