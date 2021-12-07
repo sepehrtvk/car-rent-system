@@ -24,13 +24,13 @@ exports.getCar = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const Car = await Car.findById(id);
+    const car = await Car.findById(id);
 
     res.status(200).json({
       status: 'success',
-      results: Car.length,
+      results: car.length,
       data: {
-        Car,
+        car,
       },
     });
   } catch (err) {
