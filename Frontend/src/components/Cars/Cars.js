@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import classes from "./Cars.module.css";
 import CarModel from "./CarModel";
 
 const Cars = () => {
@@ -20,7 +19,6 @@ const Cars = () => {
         }
       })
       .then((data) => {
-        console.log(data.data.cars);
         setCars(data.data.cars);
       })
       .catch((err) => {
@@ -31,15 +29,17 @@ const Cars = () => {
   return (
     <section className="container">
       <div className="row my-5">
-        <div className="col-12 text-center" >
-          <h3 className="mb-5" >آخرین خودرو ها</h3>
+        <div className="col-12 text-center">
+          <h3 className="mb-5">آخرین خودرو ها</h3>
         </div>
         {cars.map((carItem) => (
           <CarModel
+            key={carItem._id}
             name={carItem.name}
             brand={carItem.brand}
             photo={carItem.photo}
             color={carItem.color}
+            id={carItem._id}
           />
         ))}
       </div>
