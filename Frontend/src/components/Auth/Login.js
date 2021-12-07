@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import useInput from "../../hooks/use-input";
 import classes from "./Login.module.css";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext, useState } from "react";
 
@@ -139,6 +139,9 @@ const Login = (props) => {
           ثبت نام
         </Button>
       </div>
+        <Link to="/" className="btn btn-light mt-4 w-100">
+          بازگشت به صفحه اصلی
+        </Link>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>ورود نا معتبر</Modal.Title>
