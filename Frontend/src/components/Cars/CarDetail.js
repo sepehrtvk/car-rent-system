@@ -1,11 +1,54 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import AuthContext from "../../store/auth-context";
+import { useContext } from "react";
+import useInput from "../../hooks/use-input";
+import { Link } from "react-router-dom";
+
+const checkPhoneValid = (value) => {
+  const isEmpty = value.trim() !== "";
+  const is11char = value.length === 11;
+  const isNotNumber = isNaN(value);
+  const isNotFloat = value.indexOf(".") !== -1;
+  const startsWith = value.trim().startsWith("0");
+
+  return isEmpty && is11char && !isNotNumber && startsWith && !isNotFloat;
+};
 
 const CarDetail = () => {
+  const authCtx = useContext(AuthContext);
   const params = useParams();
   const [car, setCar] = useState([]);
   const [showSpinner, setShowSpinner] = useState(true);
+  const [showRentMesssage, setShowShowRentMessage] = useState(false);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const {
+    value: phoneValue,
+    isValid: phoneIsValid,
+    hasError: phoneHasError,
+    valueChangeHandler: phoneChangeHandler,
+    inputBlurHandler: phoneBlurHandler,
+    reset: resetphone,
+  } = useInput(checkPhoneValid);
+
+  const submitRentCar = (e) => {
+    phoneBlurHandler();
+
+    if (!phoneIsValid) {
+      return;
+    }
+
+    console.log(phoneValue);
+    resetphone();
+    setShowShowRentMessage(true);
+  };
 
   useEffect(() => {
     const url = "http://localhost:5550/api/v1/cars/" + params.carId;
@@ -108,13 +151,75 @@ const CarDetail = () => {
                 </select>
               </div>
               <div className="col-3">
-                <button type="button" className="btn btn-primary w-100">
+                <button
+                  type="button"
+                  className="btn btn-primary w-100"
+                  onClick={handleShow}
+                >
                   اجاره
                 </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+      {!authCtx.isLoggedIn && (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header>
+            <Modal.Title>خطای ورود</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            برای اجاره خودرو ابتدا در سایت وارد شوید یا ثبت نام کنید
+          </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-start">
+            <Link to="/auth" className="btn btn-primary text-center">
+              ورود / ثبت نام
+            </Link>
+          </Modal.Footer>
+        </Modal>
+      )}
+      {authCtx.isLoggedIn && (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header>
+            <Modal.Title>تکمیل فرآیند اجاره</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {!showRentMesssage && (
+              <Form.Group className="mb-4" controlId="phone">
+                <Form.Label>شماره تلفن</Form.Label>
+                <Form.Control
+                  type="tel"
+                  maxLength="11"
+                  placeholder="۰۹xxxxxxxxx"
+                  value={phoneValue}
+                  onChange={phoneChangeHandler}
+                  onBlur={phoneBlurHandler}
+                />
+                {phoneHasError && (
+                  <Form.Text className="text-danger">
+                    یک شماره موبایل معتبر وارد کنید
+                  </Form.Text>
+                )}
+              </Form.Group>
+            )}
+            {showRentMesssage && (
+              <div>
+                <p>درخواست اجاره این خودرو با موفقیت ثبت شد. </p>
+                <p>همکاران ما برای هماهنگی با شما تماس خواهند گرفت. </p>
+              </div>
+            )}
+          </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-between">
+            {!showRentMesssage && (
+              <Button variant="primary" onClick={submitRentCar}>
+                ثبت نهایی
+              </Button>
+            )}
+            <Button variant="danger text-white" onClick={handleClose}>
+              بستن
+            </Button>
+          </Modal.Footer>
+        </Modal>
       )}
     </div>
   );
