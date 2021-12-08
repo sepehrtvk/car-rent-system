@@ -24,7 +24,7 @@ function App() {
           <Route path="/auth" exact>
             <AuthPage />
           </Route>
-          {authCtx.isLoggedIn && localStorage.getItem("role") === "admin" && (
+          {authCtx.isLoggedIn  && (
             <Route path="/admin" exact>
               <AdminPanel />
             </Route>

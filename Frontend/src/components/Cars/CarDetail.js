@@ -23,6 +23,7 @@ const CarDetail = () => {
   const [car, setCar] = useState([]);
   const [showSpinner, setShowSpinner] = useState(true);
   const [showRentMesssage, setShowShowRentMessage] = useState(false);
+  const [rentTime, setRentTime] = useState(" ");
 
   const [show, setShow] = useState(false);
 
@@ -38,12 +39,42 @@ const CarDetail = () => {
     reset: resetphone,
   } = useInput(checkPhoneValid);
 
+  const changeSelect = (e) => {
+    setRentTime(e.target.value);
+  };
+
   const submitRentCar = (e) => {
     phoneBlurHandler();
 
     if (!phoneIsValid) {
       return;
     }
+
+    fetch("http://localhost:5550/api/v1/requests", {
+      method: "POST",
+      body: JSON.stringify({
+        name: localStorage.getItem("name"),
+        phone: phoneValue,
+        carname: car.name,
+        rentTime: rentTime,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return null;
+        }
+      })
+      .then((data) => {
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     console.log(phoneValue);
     resetphone();
@@ -143,11 +174,12 @@ const CarDetail = () => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  onChange={changeSelect}
                 >
                   <option defaultValue>زمان اجاره را انتخاب کنید : </option>
-                  <option value="1">یک روز</option>
-                  <option value="2">یک هفته</option>
-                  <option value="3">یک ماه</option>
+                  <option value="یک روز">یک روز</option>
+                  <option value="یک هفته">یک هفته</option>
+                  <option value="یک ماه">یک ماه</option>
                 </select>
               </div>
               <div className="col-3">
