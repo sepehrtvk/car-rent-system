@@ -1,11 +1,16 @@
 import "./App.css";
 import Index from "./pages/Index";
 import Layout from "./components/Layout/Layout";
-import { Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import AuthPage from "./pages/auth";
-import CarDetail from './components/Cars/CarDetail';
+import CarDetail from "./components/Cars/CarDetail";
+import AdminPanel from "./pages/adminPanel";
+import AuthContext from "./store/auth-context";
+import { useContext } from "react";
 
 function App() {
+  const authCtx = useContext(AuthContext);
+
   return (
     <>
       <Layout>
@@ -19,6 +24,12 @@ function App() {
           <Route path="/auth" exact>
             <AuthPage />
           </Route>
+          {authCtx.isLoggedIn && localStorage.getItem("role") === "admin" && (
+            <Route path="/admin" exact>
+              <AdminPanel />
+            </Route>
+          )}
+          <Redirect to="/"/>
         </Switch>
       </Layout>
     </>

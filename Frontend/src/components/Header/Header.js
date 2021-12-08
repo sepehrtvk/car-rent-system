@@ -3,6 +3,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { BsFillPersonFill } from "react-icons/bs";
 import { IoMdExit } from "react-icons/io";
 import { FaPhoneAlt } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import AuthContext from "../../store/auth-context";
@@ -32,17 +33,6 @@ const Header = () => {
             <Nav.Link as={NavLink} to="/lastCars">
               آخرین خودرو ها
             </Nav.Link>
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
         <div className="d-flex align-items-center">
@@ -64,12 +54,20 @@ const Header = () => {
           </div>
           {authCtx.isLoggedIn && (
             <button
-              className="ms-4 border-start ps-3 btn btn-primary"
+              className="ms-2 border-start ps-3 btn btn-primary"
               onClick={authCtx.logout}
             >
               <IoMdExit className="me-1" />
               <span className="ms-1">خروج</span>
             </button>
+          )}
+          {authCtx.isLoggedIn && localStorage.getItem("role") === "admin" && (
+            <Link to="/admin"
+              className="ms-1 border-start ps-3 btn btn-primary"
+            >
+              <MdDashboard className="me-1" />
+              <span className="ms-1">داشبورد ادمین</span>
+            </Link>
           )}
         </div>
       </Container>

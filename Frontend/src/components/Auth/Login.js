@@ -86,7 +86,7 @@ const Login = (props) => {
         }
       })
       .then((data) => {
-        authCtx.login(data.token, 3443443, data.data.user.name);
+        authCtx.login(data.token, 3443443, data.data.user.name,data.data.user.role);
         history.replace("/");
       })
       .catch((err) => {
