@@ -6,7 +6,7 @@ const Index = () => {
   return (
     <>
       <MainHeader />
-      <Cars />
+      <Cars mode="4" />
     </>
   );
 };

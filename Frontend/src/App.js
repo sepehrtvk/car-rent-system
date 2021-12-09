@@ -7,6 +7,7 @@ import CarDetail from "./components/Cars/CarDetail";
 import AdminPanel from "./pages/adminPanel";
 import AuthContext from "./store/auth-context";
 import { useContext } from "react";
+import AllCars from "./pages/allCars";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route path="/auth" exact>
             <AuthPage />
+          </Route>
+          <Route path="/allCars" exact>
+            <AllCars />
           </Route>
           {authCtx.isLoggedIn  && (
             <Route path="/admin" exact>

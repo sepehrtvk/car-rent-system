@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function CarModel(props) {
   return (
-    <div className="col-3">
+    <div className="col-3 mt-4">
       <div className="card">
         <img src={props.photo} alt={props.name} className="card-img-top"  height="200"/>
         <div className="card-body ">

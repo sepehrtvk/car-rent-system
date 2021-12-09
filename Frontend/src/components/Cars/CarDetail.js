@@ -193,6 +193,16 @@ const CarDetail = () => {
               </div>
             </div>
           </div>
+          <div className="col-12 mt-5 text-justify" >
+            <p className=" fw-bold fs-4" >
+              آپشن های این خودرو :
+            </p>
+          </div>
+          <div className="col-12 my-3 text-justify" >
+            <p style={{lineHeight:"2.2rem"}} >
+              {car.description}
+            </p>
+          </div>
         </div>
       )}
       {!authCtx.isLoggedIn && (
