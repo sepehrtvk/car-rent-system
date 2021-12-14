@@ -8,6 +8,7 @@ import AdminPanel from "./pages/adminPanel";
 import AuthContext from "./store/auth-context";
 import { useContext } from "react";
 import AllCars from "./pages/allCars";
+import Profile from "./pages/profile";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -31,6 +32,11 @@ function App() {
           {authCtx.isLoggedIn  && (
             <Route path="/admin" exact>
               <AdminPanel />
+            </Route>
+          )}
+          {authCtx.isLoggedIn  && (
+            <Route path="/profile" exact>
+              <Profile />
             </Route>
           )}
           <Redirect to="/"/>

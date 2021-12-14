@@ -26,14 +26,16 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem('token');
     localStorage.removeItem('name');
     localStorage.removeItem('role');
+    localStorage.removeItem('email');
 
   }, []);
 
-  const loginHandler = (token, expirationTime,fname,role) => {
+  const loginHandler = (token, expirationTime,data) => {
     setToken(token);
     localStorage.setItem('token', token);
-    localStorage.setItem('name', fname);
-    localStorage.setItem('role', role);
+    localStorage.setItem('name', data.name);
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('email', data.email);
   };
 
 

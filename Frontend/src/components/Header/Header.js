@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { BsFillPersonFill } from "react-icons/bs";
 import { IoMdExit } from "react-icons/io";
+import { IoPersonCircle } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
@@ -29,7 +30,9 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-4">
-            <Nav.Link as={NavLink} to="/allCars">مشاهده خودرو ها</Nav.Link>
+            <Nav.Link as={NavLink} to="/allCars">
+              مشاهده خودرو ها
+            </Nav.Link>
             <Nav.Link as={NavLink} to="/lastCars">
               آخرین خودرو ها
             </Nav.Link>
@@ -42,32 +45,34 @@ const Header = () => {
               ورود
             </Link>
           )}
-          {authCtx.isLoggedIn && (
-            <div className="d-flex">
-              <span className="ms-2">سلام</span>
-              <h5>{name}</h5>
-            </div>
-          )}
           <div className="ms-4 border-start ps-3">
             <FaPhoneAlt />
             <span className="ms-1">۰۹۱۲۰۵۳۲۰۲۰</span>
           </div>
           {authCtx.isLoggedIn && (
+            <Link
+              to="/profile"
+              className="ms-1 border-start ps-3 btn btn-primary"
+            >
+              <IoPersonCircle className="me-1" />
+              <span className="ms-1">{name}</span>
+            </Link>
+          )}
+          {authCtx.isLoggedIn && localStorage.getItem("role") === "admin" && (
+            <Link
+              to="/admin"
+              className="ms-1 border-start ps-3 btn btn-primary"
+            >
+              <MdDashboard  />
+            </Link>
+          )}
+          {authCtx.isLoggedIn && (
             <button
               className="ms-2 border-start ps-3 btn btn-primary"
               onClick={authCtx.logout}
             >
-              <IoMdExit className="me-1" />
-              <span className="ms-1">خروج</span>
+              <IoMdExit  />
             </button>
-          )}
-          {authCtx.isLoggedIn && localStorage.getItem("role") === "admin" && (
-            <Link to="/admin"
-              className="ms-1 border-start ps-3 btn btn-primary"
-            >
-              <MdDashboard className="me-1" />
-              <span className="ms-1">داشبورد ادمین</span>
-            </Link>
           )}
         </div>
       </Container>
