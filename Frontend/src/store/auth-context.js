@@ -11,6 +11,7 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
   const tokenData = localStorage.getItem('token');
+
   
   let initialToken;
   if (tokenData) {
@@ -27,7 +28,7 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem('name');
     localStorage.removeItem('role');
     localStorage.removeItem('email');
-
+    
   }, []);
 
   const loginHandler = (token, expirationTime,data) => {

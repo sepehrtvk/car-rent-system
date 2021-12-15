@@ -9,10 +9,15 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
-
+import { useHistory } from "react-router-dom";
 const Header = () => {
   const authCtx = useContext(AuthContext);
   const name = localStorage.getItem("name");
+  const history = useHistory();
+  const logoutUser = () => {
+    history.replace("/");
+    authCtx.logout();
+  };
 
   return (
     <Navbar bg="light" expand="lg">
@@ -63,15 +68,15 @@ const Header = () => {
               to="/admin"
               className="ms-1 border-start ps-3 btn btn-primary"
             >
-              <MdDashboard  />
+              <MdDashboard />
             </Link>
           )}
           {authCtx.isLoggedIn && (
             <button
               className="ms-2 border-start ps-3 btn btn-primary"
-              onClick={authCtx.logout}
+              onClick={logoutUser}
             >
-              <IoMdExit  />
+              <IoMdExit />
             </button>
           )}
         </div>

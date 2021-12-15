@@ -147,7 +147,7 @@ const Login = (props) => {
           <Modal.Title>ورود نا معتبر</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {errorMessage === "incorrect email or password" && (<p>ایمیل یا پسورد وارد شده اشتباه است ! ٍ</p>)}
+          {errorMessage === "incorrect email or password" && (<p>ایمیل یا پسورد وارد شده اشتباه است !</p>)}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
