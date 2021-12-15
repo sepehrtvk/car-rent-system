@@ -80,20 +80,20 @@ exports.updateSupport = async (req, res) => {
     }
   };
   
-// exports.deleteSupport = async (req, res) => {
-//   try {
-//     const newSupport = await Support.findByIdAndDelete(req.params.id);
+exports.deleteSupport = async (req, res) => {
+  try {
+    const newSupport = await Support.findByIdAndDelete(req.params.id);
 
-//     res.status(204).json({
-//       status: 'success',
-//       data: {
-//         Support: newSupport,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(404).json({
-//       status: 'failed',
-//       message: err,
-//     });
-//   }
-// };
+    res.status(204).json({
+      status: 'success',
+      data: {
+        Support: newSupport,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'failed',
+      message: err,
+    });
+  }
+};

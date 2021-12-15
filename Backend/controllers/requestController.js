@@ -60,20 +60,20 @@ exports.createRequest = async (req, res) => {
 };
 
 
-// exports.deleteRequest = async (req, res) => {
-//   try {
-//     const newRequest = await Request.findByIdAndDelete(req.params.id);
+exports.deleteRequest = async (req, res) => {
+  try {
+    const newRequest = await Request.findByIdAndDelete(req.params.id);
 
-//     res.status(204).json({
-//       status: 'success',
-//       data: {
-//         Request: newRequest,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(404).json({
-//       status: 'failed',
-//       message: err,
-//     });
-//   }
-// };
+    res.status(204).json({
+      status: 'success',
+      data: {
+        Request: newRequest,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'failed',
+      message: err,
+    });
+  }
+};

@@ -1,4 +1,6 @@
 import React from "react";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineMessage } from "react-icons/ai";
 
 const SupportItem = (props) => {
   return (
@@ -10,10 +12,15 @@ const SupportItem = (props) => {
       <td>
         {props.supportAnwser === " " && (
           <button className="btn btn-dark" onClick={props.submitAnwser}>
-            پاسخ دادن
+            <AiOutlineMessage />
           </button>
         )}
-        {props.supportAnwser !== " " && (props.supportAnwser)}
+        {props.supportAnwser !== " " && props.supportAnwser}
+      </td>
+      <td>
+        <button className="btn btn-danger" onClick={props.deleteAnwser}>
+          <BsTrash />
+        </button>
       </td>
     </tr>
   );

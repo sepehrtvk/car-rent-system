@@ -11,6 +11,6 @@ router
 router
   .route("/:id")
   .get(requestController.getRequest)
-//   .delete(requestController.deleteRequest);
+   .delete(requestController.deleteRequest);
 
 module.exports = router;

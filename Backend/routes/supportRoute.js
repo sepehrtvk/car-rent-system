@@ -12,6 +12,6 @@ router
   .route("/:id")
   .get(supportController.getSupport)
   .patch(supportController.updateSupport)
-//   .delete(supportController.deletesupport);
+  .delete(supportController.deleteSupport);
 
 module.exports = router;

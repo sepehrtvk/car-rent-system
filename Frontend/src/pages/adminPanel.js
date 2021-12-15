@@ -95,6 +95,53 @@ const AdminPanel = () => {
     handleShow();
   };
 
+  const deleteAnwser = (id) => {
+    fetch("http://localhost:5550/api/v1/support/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return null;
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    window.location.reload();
+
+  };
+  const deleteRequest = (id) => {
+  
+    fetch("http://localhost:5550/api/v1/requests/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return null;
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    window.location.reload();
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -123,6 +170,7 @@ const AdminPanel = () => {
                 <th scope="col">نام خودرو</th>
                 <th scope="col">شماره تلفن</th>
                 <th scope="col">زمان اجاره</th>
+                <th scope="col">حذف </th>
               </tr>
             </thead>
             <tbody>
@@ -134,6 +182,7 @@ const AdminPanel = () => {
                   phone={reqItem.phone}
                   carname={reqItem.carname}
                   rentTime={reqItem.rentTime}
+                  deleteRequest={() => deleteRequest(reqItem._id)}
                 />
               ))}
             </tbody>
@@ -166,6 +215,7 @@ const AdminPanel = () => {
                 <th scope="col">شماره تلفن</th>
                 <th scope="col">سوال</th>
                 <th scope="col">پاسخ </th>
+                <th scope="col">حذف </th>
               </tr>
             </thead>
             <tbody>
@@ -178,6 +228,7 @@ const AdminPanel = () => {
                   supportQuestion={reqItem.supportQuestion}
                   supportAnwser={reqItem.supportAnwser}
                   submitAnwser={() => submitAnwser(reqItem._id)}
+                  deleteAnwser={() => deleteAnwser(reqItem._id)}
                 />
               ))}
             </tbody>
