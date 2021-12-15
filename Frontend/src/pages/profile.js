@@ -18,7 +18,6 @@ const Profile = () => {
   const role = localStorage.getItem("role");
 
   const textRef = useRef();
-  const phoneRef = useRef();
 
   const [show, setShow] = useState(false);
   const [supports, setSupports] = useState([]);
