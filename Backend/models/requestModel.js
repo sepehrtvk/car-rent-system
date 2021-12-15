@@ -8,7 +8,6 @@ const requestSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'please tell us your email'],
-    unique: true,
     lowercase: true,
   },
   carname: {
