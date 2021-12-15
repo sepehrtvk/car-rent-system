@@ -120,95 +120,103 @@ const Profile = () => {
           </ul>
         </div>
       </div>
-      <div className="row mt-3">
-        <div className="col-6 text-center">
-          <h3 className="text-white border-bottom pb-3 mt-5">
-            درخواست پشتیبانی آنلاین
-          </h3>
-          <Form>
-            <Form.Group className=" text-end" controlId="phone">
-              <Form.Label className="text-white mt-3">شماره تلفن : </Form.Label>
-              <Form.Control
-                type="tel"
-                maxLength="11"
-                placeholder="۰۹xxxxxxxxx"
-                value={phoneValue}
-                onChange={phoneChangeHandler}
-                onBlur={phoneBlurHandler}
-              />
-              {phoneHasError && (
-                <Form.Text className="text-danger">
-                  یک شماره موبایل معتبر وارد کنید
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Form>
-          <Form>
-            <Form.Group
-              className="my-4  text-end"
-              controlId="exampleForm.ControlTextarea2"
-            >
-              <Form.Label className="text-white">متن درخواست شما : </Form.Label>
-              <Form.Control as="textarea" rows={3} ref={textRef} />
-            </Form.Group>
-          </Form>
-          <button className="btn btn-light" onClick={submitQuestion}>
-            ارسال درخواست پشتیبانی
-          </button>
-        </div>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header>
-            <Modal.Title>پاسخ به درخواست پشتیبانی</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            درخواست شما با موفقیت ثبت شد. منتظر پاسخ ادمین های سایت باشید.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="danger" onClick={handleClose}>
-              بستن
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        <div className="col-6 text-center">
-          <h3 className="text-white border-bottom pb-3 mt-5">
-            پاسخ های پشتیبانی سایت
-          </h3>
-          {showSpinner && (
-            <div className="col-12 text-center">
-              <div
-                className="spinner-border my-5 text-white "
-                style={{ width: "3.5rem", height: "3.5rem" }}
-                role="status"
+      {!localStorage.getItem("role") === "admin" && (
+        <div className="row mt-3">
+          <div className="col-6 text-center">
+            <h3 className="text-white border-bottom pb-3 mt-5">
+              درخواست پشتیبانی آنلاین
+            </h3>
+            <Form>
+              <Form.Group className=" text-end" controlId="phone">
+                <Form.Label className="text-white mt-3">
+                  شماره تلفن :{" "}
+                </Form.Label>
+                <Form.Control
+                  type="tel"
+                  maxLength="11"
+                  placeholder="۰۹xxxxxxxxx"
+                  value={phoneValue}
+                  onChange={phoneChangeHandler}
+                  onBlur={phoneBlurHandler}
+                />
+                {phoneHasError && (
+                  <Form.Text className="text-danger">
+                    یک شماره موبایل معتبر وارد کنید
+                  </Form.Text>
+                )}
+              </Form.Group>
+            </Form>
+            <Form>
+              <Form.Group
+                className="my-4  text-end"
+                controlId="exampleForm.ControlTextarea2"
               >
-                <span className="visually-hidden">Loading...</span>
+                <Form.Label className="text-white">
+                  متن درخواست شما :{" "}
+                </Form.Label>
+                <Form.Control as="textarea" rows={3} ref={textRef} />
+              </Form.Group>
+            </Form>
+            <button className="btn btn-light" onClick={submitQuestion}>
+              ارسال درخواست پشتیبانی
+            </button>
+          </div>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+              <Modal.Title>پاسخ به درخواست پشتیبانی</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              درخواست شما با موفقیت ثبت شد. منتظر پاسخ ادمین های سایت باشید.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="danger" onClick={handleClose}>
+                بستن
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <div className="col-6 text-center">
+            <h3 className="text-white border-bottom pb-3 mt-5">
+              پاسخ های پشتیبانی سایت
+            </h3>
+            {showSpinner && (
+              <div className="col-12 text-center">
+                <div
+                  className="spinner-border my-5 text-white "
+                  style={{ width: "3.5rem", height: "3.5rem" }}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
               </div>
-            </div>
-          )}
-          <ul className="list-group p-5 text-end">
-            {supports.map((item) => (
-              <>
-                <li className="list-group-item fw-bold">
-                  مشکل :
-                  <span className="fw-normal me-2">{item.supportQuestion}</span>
-                </li>
-                <li className="list-group-item fw-bold">
-                  پاسخ :
-                  {item.supportAnwser === " " && (
-                    <span className="fw-normal me-2 text-danger">
-                      هنوز پاسخ ای داده نشده است
+            )}
+            <ul className="list-group p-5 text-end">
+              {supports.map((item) => (
+                <>
+                  <li className="list-group-item fw-bold">
+                    مشکل :
+                    <span className="fw-normal me-2">
+                      {item.supportQuestion}
                     </span>
-                  )}
-                  {item.supportAnwser !== " " && (
-                    <span className="fw-normal me-2 text-primary">
-                      {item.supportAnwser}
-                    </span>
-                  )}
-                </li>
-              </>
-            ))}
-          </ul>
+                  </li>
+                  <li className="list-group-item fw-bold">
+                    پاسخ :
+                    {item.supportAnwser === " " && (
+                      <span className="fw-normal me-2 text-danger">
+                        هنوز پاسخ ای داده نشده است
+                      </span>
+                    )}
+                    {item.supportAnwser !== " " && (
+                      <span className="fw-normal me-2 text-primary">
+                        {item.supportAnwser}
+                      </span>
+                    )}
+                  </li>
+                </>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
