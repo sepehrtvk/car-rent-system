@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 
 const checkEmailValid = (value) => {
-  const email = value.includes("@")
+  const email = value.includes("@");
   const isNotNumber = isNaN(value);
 
   return isNotNumber && email;
@@ -92,7 +92,6 @@ const SignUp = (props) => {
       return;
     }
 
-
     fetch("http://localhost:5550/api/v1/users/signup", {
       method: "POST",
       body: JSON.stringify({
@@ -120,7 +119,7 @@ const SignUp = (props) => {
         }
       })
       .then((data) => {
-        authCtx.login(data.token, 3443443,data.data.user.name);
+        authCtx.login(data.token, 3443443, data.data.user);
         history.replace("/");
       })
       .catch((err) => {
