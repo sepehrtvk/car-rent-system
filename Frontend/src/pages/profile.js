@@ -120,7 +120,7 @@ const Profile = () => {
           </ul>
         </div>
       </div>
-      {!localStorage.getItem("role") === "admin" && (
+      {localStorage.getItem("role") === "user" && (
         <div className="row mt-3">
           <div className="col-6 text-center">
             <h3 className="text-white border-bottom pb-3 mt-5">
