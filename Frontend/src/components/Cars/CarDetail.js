@@ -75,8 +75,6 @@ const CarDetail = () => {
       .catch((err) => {
         console.log(err);
       });
-
-    console.log(phoneValue);
     resetphone();
     setShowShowRentMessage(true);
   };
