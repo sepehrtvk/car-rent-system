@@ -139,14 +139,16 @@ const Login = (props) => {
           ثبت نام
         </Button>
       </div>
-        <Link to="/" className="btn btn-light mt-4 w-100">
-          بازگشت به صفحه اصلی
-        </Link>
+      <Link to="/" className="btn btn-light mt-4 w-100">
+        بازگشت به صفحه اصلی
+      </Link>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>ورود نا معتبر</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Body>
+          {errorMessage === "incorrect email or password" && (<p>ایمیل یا پسورد وارد شده اشتباه است ! ٍ</p>)}
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             بستن
