@@ -16,7 +16,7 @@ const db = process.env.DATABASE.replace(
 mongoose
   .connect(db)
   .then(() => console.log('succesfull'))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err)); 
 
 
 
@@ -25,6 +25,7 @@ const userRouter = require('./routes/userRoutes');
 const carRouter = require('./routes/carRoutes');
 const requestRouter = require('./routes/requestRoutes');
 const supportRouter = require('./routes/supportRoute');
+const userViewRouter = require('./routes/userViewRoutes');
 
 
 
@@ -61,6 +62,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/cars', carRouter);
 app.use('/api/v1/requests', requestRouter);
 app.use('/api/v1/support', supportRouter);
+app.use('/api/v1/view', userViewRouter);
 
 
 const port = process.env.PORT || 5000;
