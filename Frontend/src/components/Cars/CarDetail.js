@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
@@ -6,6 +6,7 @@ import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
 import useInput from "../../hooks/use-input";
 import { Link } from "react-router-dom";
+import UserView from "./UserView";
 
 const checkPhoneValid = (value) => {
   const isEmpty = value.trim() !== "";
@@ -21,9 +22,11 @@ const CarDetail = () => {
   const authCtx = useContext(AuthContext);
   const params = useParams();
   const [car, setCar] = useState([]);
+  const [views, setViews] = useState([]);
   const [showSpinner, setShowSpinner] = useState(true);
   const [showRentMesssage, setShowShowRentMessage] = useState(false);
   const [rentTime, setRentTime] = useState(" ");
+  const textRef = useRef();
 
   const [show, setShow] = useState(false);
 
@@ -69,9 +72,7 @@ const CarDetail = () => {
           return null;
         }
       })
-      .then((data) => {
-        
-      })
+      .then((data) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -102,6 +103,59 @@ const CarDetail = () => {
         console.log(err);
       });
   }, [params.carId]);
+
+  useEffect(() => {
+    const url = "http://localhost:5550/api/v1/view";
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return null;
+        }
+      })
+      .then((data) => {
+        setViews(data.data.Views);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const submitUserView = (e) => {
+    console.log();
+
+    fetch("http://localhost:5550/api/v1/view", {
+      method: "POST",
+      body: JSON.stringify({
+        name: localStorage.getItem("name"),
+        carname: car.name,
+        view: textRef.current.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return null;
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    window.location.reload();
+  };
 
   return (
     <div className="container">
@@ -191,18 +245,73 @@ const CarDetail = () => {
               </div>
             </div>
           </div>
-          <div className="col-12 mt-5 text-justify" >
-            <p className=" fw-bold fs-4" >
-              آپشن های این خودرو :
-            </p>
+          <div className="col-12 mt-5 text-justify">
+            <p className=" fw-bold fs-4">آپشن های این خودرو :</p>
           </div>
-          <div className="col-12 my-3 text-justify" >
-            <p style={{lineHeight:"2.2rem"}} >
-              {car.description}
-            </p>
+          <div className="col-12 my-3 text-justify">
+            <p style={{ lineHeight: "2.2rem" }}>{car.description}</p>
           </div>
         </div>
       )}
+
+      {authCtx.isLoggedIn && (
+        <div className="container border-top">
+          <div className="row text-center my-4">
+            <h3>نظرات کاربران</h3>
+          </div>
+          <div className="row pb-2 border-bottom">
+            <div className="col-3 fw-bold fs-4 border-end">نام کاربر</div>
+            <div className="col-9 fw-bold fs-4 border-end">نظرات</div>
+          </div>
+          {views.map((view) => (
+            <UserView
+              carname1={view.carname}
+              carname2={car.name}
+              userName={view.name}
+              userView={view.view}
+            />
+          ))}
+        </div>
+      )}
+      {!authCtx.isLoggedIn && (
+        <div className="container border-top">
+          <div className="row text-center my-4">
+            <h3>نظرات کاربران</h3>
+          </div>
+          <div className="row pb-2">
+            <div className="col-12 text-danger fw-bold fs-4 ">
+              برای ثبت نظر و دیدن نظرات سایر کاربران ابتدا در سایت وارد شوید.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {authCtx.isLoggedIn && (
+        <div className="container border-top">
+          <div className="row text-center mb-4 mt-5">
+            <h3>ثبت نظر</h3>
+          </div>
+          <div className="row mb-5">
+            <div className="col-12 fs-4 mb-2"> متن نظر:</div>
+            <div className="col-10 fw-bold fs-4 ">
+              <Form>
+                <Form.Group className="text-end">
+                  <Form.Control as="textarea" rows={3} ref={textRef} />
+                </Form.Group>
+              </Form>
+            </div>
+            <div className="col-2 text-center">
+              <button
+                className="btn btn-primary mt-4 w-100"
+                onClick={submitUserView}
+              >
+                ثبت نظر
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!authCtx.isLoggedIn && (
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>
